@@ -1,10 +1,7 @@
-from django.contrib import admin
+"""
+Admin configuration for oc_lettings_site.
 
-from .models import Letting
-from .models import Address
-from .models import Profile
+All specific models are registered in their respective applications.
+"""
 
-
-admin.site.register(Letting)
-admin.site.register(Address)
-admin.site.register(Profile)
+from django.contrib import admin  # noqa: F401
