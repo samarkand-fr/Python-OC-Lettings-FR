@@ -1,0 +1,11 @@
+"""
+Admin configuration for the lettings application.
+
+Registers Letting and Address models with the Django admin site.
+"""
+
+from django.contrib import admin
+from .models import Letting, Address
+
+admin.site.register(Letting)
+admin.site.register(Address)
