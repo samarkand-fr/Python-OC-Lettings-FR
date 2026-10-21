@@ -5,7 +5,7 @@ This module provides views to list all user profiles
 and to display the detail of a single profile.
 """
 
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Profile
 
 
@@ -35,6 +35,6 @@ def profile(request, username):
     Returns:
         HttpResponse: Rendered page with the user's profile details.
     """
-    profile = Profile.objects.get(user__username=username)
+    profile = get_object_or_404(Profile, user__username=username)
     context = {'profile': profile}
     return render(request, 'profiles/profile.html', context)

@@ -3,6 +3,7 @@ Root URL configuration for the oc_lettings_site project.
 
 Routes requests to the home page, the admin interface,
 and the lettings and profiles applications.
+Also defines custom HTTP 404 and 500 error handlers.
 """
 
 from django.contrib import admin
@@ -16,3 +17,6 @@ urlpatterns = [
     path('profiles/', include('profiles.urls')),
     path('admin/', admin.site.urls),
 ]
+
+handler404 = 'oc_lettings_site.views.handler404'
+handler500 = 'oc_lettings_site.views.handler500'
