@@ -2,3 +2,5 @@ django==3.0
 flake8==3.7.0
 pytest-django==3.9.0
 coverage>=7.0
+sentry-sdk>=2.0.0
+python-dotenv>=1.0.0
