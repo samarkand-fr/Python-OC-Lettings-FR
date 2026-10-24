@@ -2,7 +2,7 @@
 Root URL configuration for the oc_lettings_site project.
 
 Routes requests to the home page, the admin interface,
-and the lettings and profiles applications.
+the lettings and profiles applications, and a Sentry debug endpoint.
 Also defines custom HTTP 404 and 500 error handlers.
 """
 
@@ -16,6 +16,7 @@ urlpatterns = [
     path('lettings/', include('lettings.urls')),
     path('profiles/', include('profiles.urls')),
     path('admin/', admin.site.urls),
+    path('sentry-debug/', views.sentry_debug, name='sentry_debug'),
 ]
 
 handler404 = 'oc_lettings_site.views.handler404'
