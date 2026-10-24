@@ -4,6 +4,7 @@ Unit and integration tests for the lettings application.
 Tests models (Address, Letting), views (index, letting), and URL routing.
 """
 
+from unittest.mock import patch
 from django.test import TestCase, Client, override_settings
 from django.urls import reverse, resolve
 from lettings.models import Address, Letting
@@ -98,3 +99,21 @@ class LettingsViewTests(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
         self.assertTemplateUsed(response, '404.html')
+
+    @patch('lettings.views.Letting.objects.all')
+    def test_lettings_index_unexpected_error(self, mock_all):
+        """Test that an unexpected exception in lettings index returns 500 page."""
+        mock_all.side_effect = RuntimeError('Database failure')
+        url = reverse('lettings:index')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 500)
+        self.assertTemplateUsed(response, '500.html')
+
+    @patch('lettings.views.Letting.objects.get')
+    def test_letting_detail_view_unexpected_error(self, mock_get):
+        """Test that an unexpected exception in letting view returns 500 page."""
+        mock_get.side_effect = RuntimeError('Database failure')
+        url = reverse('lettings:letting', kwargs={'letting_id': 1})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 500)
+        self.assertTemplateUsed(response, '500.html')

@@ -4,6 +4,7 @@ Unit and integration tests for the profiles application.
 Tests models (Profile), views (index, profile), and URL routing.
 """
 
+from unittest.mock import patch
 from django.test import TestCase, Client, override_settings
 from django.contrib.auth.models import User
 from django.urls import reverse, resolve
@@ -89,3 +90,21 @@ class ProfilesViewTests(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
         self.assertTemplateUsed(response, '404.html')
+
+    @patch('profiles.views.Profile.objects.all')
+    def test_profiles_index_unexpected_error(self, mock_all):
+        """Test that an unexpected exception in profiles index returns 500 page."""
+        mock_all.side_effect = RuntimeError('Database failure')
+        url = reverse('profiles:index')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 500)
+        self.assertTemplateUsed(response, '500.html')
+
+    @patch('profiles.views.Profile.objects.get')
+    def test_profile_detail_view_unexpected_error(self, mock_get):
+        """Test that an unexpected exception in profile view returns 500 page."""
+        mock_get.side_effect = RuntimeError('Database failure')
+        url = reverse('profiles:profile', kwargs={'username': self.user.username})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 500)
+        self.assertTemplateUsed(response, '500.html')

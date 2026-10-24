@@ -10,6 +10,8 @@ import django
 from django.conf import settings
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'oc_lettings_site.settings')
+os.environ.setdefault('SECRET_KEY', 'test-secret-key-for-test-suite-runs')
+os.environ['SENTRY_DSN'] = ''
 
 if not settings.configured:
     django.setup()
