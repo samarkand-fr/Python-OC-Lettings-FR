@@ -158,13 +158,28 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
-if TESTING:
-    # Use simple storage during tests to avoid needing a pre-built manifest
-    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
-else:
-    # Use compressed manifest storage in production (requires collectstatic)
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# Détection fiable si on est en train de lancer les tests (via pytest ou manage.py test)
+TESTING = (
+    'test' in sys.argv 
+    or 'pytest' in sys.modules 
+    or os.environ.get('TESTING') == 'True'
+)
 
+# Configuration moderne des storages (Django 4.2+)
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": (
+            # Stockage simple pour les tests (pas besoin de manifest.json)
+            "django.contrib.staticfiles.storage.StaticFilesStorage"
+            if TESTING
+            # Stockage avec manifeste compressé pour la production (Whitenoise)
+            else "whitenoise.storage.CompressedManifestStaticFilesStorage"
+        ),
+    },
+}
 # Logging configuration
 LOGGING = {
     'version': 1,
