@@ -20,7 +20,7 @@ Dans la suite de la documentation, la commande `python` fait référence à l'in
 #### 1. Cloner le repository
 
 ```bash
-git clone <URL_DE_VOTRE_REPOSITORY_FORK>
+git clone https://github.com/samarkand-fr/Python-OC-Lettings-FR.git
 cd oc_lettings
 ```
 
@@ -114,7 +114,6 @@ docker run -d --rm --name oc-lettings-container -p 8000:8000 -e SECRET_KEY="votr
 
 Le pipeline d'intégration et de déploiement continus (CI/CD) est géré automatiquement par **GitHub Actions** (`.github/workflows/ci-cd.yml`) :
 
-```
 [ Push / Pull Request ]
           │
           ▼
@@ -139,7 +138,6 @@ Le pipeline d'intégration et de déploiement continus (CI/CD) est géré automa
 │  - Appel sécurisé du Webhook Deploy Hook de Render     │
 │  - Déploiement de la nouvelle image Docker en direct   │
 └────────────────────────────────────────────────────────┘
-```
 
 - **Sur les branches secondaires / Pull Requests** : seuls les tests et le linting s'exécutent. Aucun conteneur n'est construit et aucun déploiement n'a lieu.
 - **Sur la branche `master`** : si et seulement si les tests réussissent, l'image Docker est poussée sur Docker Hub, puis le déploiement sur Render est déclenché.
