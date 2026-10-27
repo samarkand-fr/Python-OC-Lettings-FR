@@ -12,7 +12,7 @@ jobs:
   # Job 1: Compilation, Linting, Tests & Coverage Verification (> 80%)
   test_and_lint:
     name: Lint & Test Suite
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout repository code
