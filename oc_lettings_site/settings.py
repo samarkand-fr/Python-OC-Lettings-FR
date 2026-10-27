@@ -160,9 +160,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / "static"]
 # Détection fiable si on est en train de lancer les tests (via pytest ou manage.py test)
 TESTING = (
-    'test' in sys.argv 
-    or 'pytest' in sys.modules 
-    or os.environ.get('TESTING') == 'True'
+    'test' in sys.argv or 'pytest' in sys.modules or os.environ.get('TESTING') == 'True'
 )
 
 # Configuration moderne des storages (Django 4.2+)
