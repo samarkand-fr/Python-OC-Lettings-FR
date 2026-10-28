@@ -178,6 +178,9 @@ STORAGES = {
         ),
     },
 }
+
+# Empêche Whitenoise de planter si une image référencée dans le CSS est manquante
+WHITENOISE_MANIFEST_STRICT = False
 # Logging configuration
 LOGGING = {
     'version': 1,
