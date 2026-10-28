@@ -174,7 +174,7 @@ STORAGES = {
             "django.contrib.staticfiles.storage.StaticFilesStorage"
             if TESTING
             # Stockage avec manifeste compressé pour la production (Whitenoise)
-            else "whitenoise.storage.CompressedManifestStaticFilesStorage"
+            else "whitenoise.storage.CompressedStaticFilesStorage"
         ),
     },
 }
