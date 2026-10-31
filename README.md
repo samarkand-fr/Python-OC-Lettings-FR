@@ -286,6 +286,51 @@ Après avoir configuré le pipeline :
 
 ---
 
+## 📚 Documentation technique (Sphinx)
+
+La documentation complète du projet est générée à l'aide de **Sphinx** et utilise le thème officiel **Read the Docs**.
+
+### 1. Consulter la documentation en local
+
+Pour générer la documentation HTML en local :
+
+```bash
+sphinx-build -b html docs docs/_build/html
+```
+
+Ou en utilisant le Makefile dans le dossier `docs/` :
+
+```bash
+cd docs
+make html
+```
+
+Ouvrez ensuite le fichier `docs/_build/html/index.html` dans votre navigateur web :
+
+```bash
+# macOS
+open docs/_build/html/index.html
+
+# Linux
+xdg-open docs/_build/html/index.html
+
+# Windows
+start docs/_build/html/index.html
+```
+
+### 2. Contenu de la documentation
+
+La documentation est structurée en plusieurs guides détaillés :
+
+- **Description du projet** : Contexte, objectifs et présentation fonctionnelle.
+- **Guide d'installation** : Prérequis, environnement virtuel, configuration `.env` et dépendances.
+- **Démarrage rapide** : Lancement du serveur local, navigation et points de contrôle.
+- **Base de données et modèles** : Schéma relationnel, diagramme ORM, détails des modèles et migrations.
+- **Architecture et technologies** : Architecture modulaire, intergiciels WhiteNoise, surveillance Sentry et journalisation.
+- **Déploiement et CI/CD** : Conteneurisation Docker, jobs GitHub Actions et hébergement Render.
+
+---
+
 ## 📋 Bonnes pratiques
 
 - Ne stockez jamais les clés secrètes dans le dépôt Git.
