@@ -31,6 +31,7 @@ class OCLettingsSiteTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'index.html')
         self.assertContains(response, 'Welcome to Holiday Homes')
+        self.assertContains(response, 'Date et heure :')
 
     @override_settings(DEBUG=False)
     def test_404_page(self):
