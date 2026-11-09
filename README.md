@@ -1,8 +1,14 @@
 # Orange County Lettings
 
+[![CI/CD Pipeline](https://github.com/samarkand-fr/Python-OC-Lettings-FR/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/samarkand-fr/Python-OC-Lettings-FR/actions/workflows/ci-cd.yml)
+![Python](https://img.shields.io/badge/Python-3.10%2B-blue)
+![Coverage](https://img.shields.io/badge/Coverage-94%25-brightgreen)
+[![Docker Hub](https://img.shields.io/badge/Docker%20Hub-hebanour1998%2Foc--lettings-2496ed)](https://hub.docker.com/r/hebanour1998/oc-lettings)
+
 Application web Django permettant de consulter des locations immobilières (*Holiday Homes*) et des profils d'utilisateurs.
 
-🌐 **Application en production :** [Orange County Lettings](https://python-oc-lettings-fr-omgd.onrender.com)
+🌐 **Application en production :** [Orange County Lettings](https://python-oc-lettings-fr-omgd.onrender.com)  
+🐳 **Dépôt Docker Hub :** [hebanour1998/oc-lettings](https://hub.docker.com/r/hebanour1998/oc-lettings)
 
 ---
 
@@ -67,30 +73,39 @@ L'application est accessible à l'adresse suivante :
 #### 6. Vérifier la qualité du code
 
 ```bash
-flake8
+python -m flake8
 ```
 
 #### 7. Exécuter les tests et vérifier la couverture
 
-Lancer les tests :
+Lancer les tests unitaires et d'intégration :
 
 ```bash
-pytest
+python -m pytest
 ```
 
-Mesurer la couverture :
+Mesurer la couverture de tests :
 
 ```bash
-coverage run -m pytest
+python -m coverage run -m pytest
 ```
 
-Générer le rapport et vérifier que la couverture atteint au moins 80 % :
+Générer le rapport et vérifier que la couverture atteint au moins 80 % (actuellement 94 %) :
 
 ```bash
-coverage report --fail-under=80 --omit="*/tests*,*/migrations/*,manage.py,*/wsgi.py,*/asgi.py,conftest.py"
+python -m coverage report --fail-under=80 --omit="*/tests*,*/migrations/*,manage.py,*/wsgi.py,*/asgi.py,conftest.py"
 ```
 
-#### 8. Accéder au panneau d'administration
+#### 8. Tester la surveillance Sentry et la journalisation
+
+Une route de test dédiée permet de vérifier en direct la capture des exceptions par Sentry et la journalisation structurée :
+
+1. Démarrez le serveur local (`python manage.py runserver`).
+2. Rendez-vous sur [http://localhost:8000/sentry-debug/](http://localhost:8000/sentry-debug/).
+3. Cette route déclenche intentionnellement une `ZeroDivisionError`, immédiatement journalisée avec horodatage (`datefmt: '%Y-%m-%d %H:%M:%S'`) et transmise à votre tableau de bord Sentry.
+4. L'horodatage en direct (date et heure) est également visible dans le pied de page (*footer*) de toutes les pages de l'application.
+
+#### 9. Accéder au panneau d'administration
 
 Créez un compte administrateur :
 
@@ -117,28 +132,32 @@ docker build -t oc-lettings:latest .
 ### Option 2 — Lancer le conteneur local
 
 ```bash
-docker run -d \
+docker run -d --rm \
   --name oc_lettings_app \
   -p 8000:8000 \
   -e SECRET_KEY="votre_cle_secrete_django" \
+  -e DEBUG=False \
+  -e ALLOWED_HOSTS="localhost,127.0.0.1" \
   oc-lettings:latest
 ```
 
 L'application est accessible sur [http://localhost:8000](http://localhost:8000).
 
-### Option 3 — Utiliser l'image publiée sur Docker Hub
+### Option 3 — Utiliser l'image officielle publiée sur Docker Hub
 
 ```bash
 docker run -d --rm \
   --name oc-lettings-container \
   -p 8000:8000 \
-  -e SECRET_KEY="votre_cle_secrete" \
+  -e SECRET_KEY="votre_cle_secrete_django" \
+  -e DEBUG=False \
+  -e ALLOWED_HOSTS="localhost,127.0.0.1" \
   hebanour1998/oc-lettings:latest
 ```
 
-Cette commande récupère automatiquement l'image si elle n'est pas déjà présente localement, puis lance le conteneur.
+Cette commande télécharge automatiquement l'image depuis Docker Hub si elle n'est pas présente localement, puis démarre le conteneur.
 
-**Remarque :** ces commandes supposent que l'image Docker est configurée pour démarrer correctement le serveur Django et que les variables d'environnement nécessaires sont définies.
+> 💡 **Compatibilité multi-architectures :** L'image Docker `hebanour1998/oc-lettings` est automatiquement construite en multi-plateforme (`linux/amd64` et `linux/arm64`) via GitHub Actions et Docker Buildx (QEMU). Elle tourne donc nativement sans avertissement d'émulation aussi bien sur architecture Intel/AMD que sur les Mac Apple Silicon (M1/M2/M3).
 
 ---
 
